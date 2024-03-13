@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EasyMoney.Properties;
+using EasyMoney.Entities;
 
-namespace EasyMoney.Entities
+namespace EasyMoney.Utilities
 {
     public static class RankRepository
     {
@@ -25,6 +26,17 @@ namespace EasyMoney.Entities
         {
             return Ranks.OrderByDescending(r => r.RequiredExperience)
                         .FirstOrDefault(r => r.RequiredExperience <= experience);
+        }
+
+        public static decimal GetRequiredExperienceToRankUp(int currentId)
+        {
+            if (currentId >= Ranks.Count - 1)
+                return -1;
+
+            return Ranks
+                .Where(rank => rank.Id > currentId)
+                .Select(rank => rank.RequiredExperience)
+                .FirstOrDefault();
         }
     }
 }

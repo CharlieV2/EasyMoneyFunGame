@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EasyMoney.Utilities;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyMoney.Entities
 {
@@ -20,7 +17,20 @@ namespace EasyMoney.Entities
 
         private decimal _experience = 0;
 
-        private Rank _currentRank = null;
+        private Rank _currentRank;
+
+
+        public decimal Experience
+        { 
+            get { return _experience; }
+            set
+            {
+                if (value >= 0)
+                {
+                    _experience = value;
+                }
+            }
+        }
 
 
         public PlayerRank() { }
@@ -32,12 +42,6 @@ namespace EasyMoney.Entities
             UpdateRank();
         }
 
-        public decimal GetExperience()
-        {
-            return _experience;
-        }
-
-
         public void UpdateRank()
         {
             Rank newRank = RankRepository.GetRank(_experience);
@@ -47,6 +51,16 @@ namespace EasyMoney.Entities
 
             _currentRank = newRank;
             OnRankUpdated(EventArgs.Empty);
+        }
+
+        public string GetRankName()
+        {
+            return _currentRank.Name;
+        }
+
+        public int GetRankId()
+        {
+            return _currentRank.Id;
         }
 
         public Image GetRankImage()
